@@ -1,0 +1,29 @@
+version: '3.8'  # Docker Compose sürümü
+
+services:
+  jenkins-blueocean:
+    image: myjenkins-blueocean:2.516.2-1  # Kullandığın imaj
+    container_name: jenkins-blueocean
+    restart: on-failure  # Hata durumunda yeniden başlat
+    networks:
+      - jenkins  # Senin belirttiğin network
+    environment:
+      - DOCKER_HOST=tcp://docker:2376  # Docker-in-Docker için host
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+    volumes:
+      - jenkins-data:/var/jenkins_home  # Jenkins verilerini sakla
+      - jenkins-docker-certs:/certs/client:ro  # TLS sertifikaları
+    ports:
+      - "8080:8080"  # Jenkins UI
+      - "50000:50000"  # Jenkins agent'ları için
+    privileged: true  # Docker-in-Docker için gerekli (güvenlik açısından dikkatli ol)
+
+networks:
+  jenkins:
+    name: jenkins  # Mevcut network'ü kullan
+    driver: bridge
+
+volumes:
+  jenkins-data:  # Persist Jenkins verileri
+  jenkins-docker-certs:  # TLS sertifikaları için
