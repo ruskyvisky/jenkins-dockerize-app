@@ -22,6 +22,7 @@ services:
 networks:
   jenkins:
     name: jenkins  # Mevcut network'ü kullan
+    external: true
     driver: bridge
 
 volumes:

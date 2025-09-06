@@ -1,9 +1,13 @@
 
-const app = require('express')();
-const port = 3000;
+const express = require('express');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const port = process.env.PORT;
+
+const app = express();
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-// test
-// test2
